@@ -49,7 +49,11 @@ The global documents live in [`lib/global-content.ts`](./lib/global-content.ts),
 
 ## Authentication boundary
 
-The legal center is public and does not authenticate users. Some BOLABLG.com applications use Clerk for registration, sign-in, verification, and access controls. The center explains that shared pattern, while each product page identifies its own implementation and data practices.
+The legal center is public and does not authenticate users. BOLABLG.com product applications use the shared production Clerk instance for registration, sign-in, verification, and identity. The product applications own authorization decisions such as allowlists, access requests, roles, and product data; the legal center only documents the relationship.
+
+`clerk.bolablg.com` is reserved for Clerk's production custom domain, Frontend API, session-management surface, and OAuth callbacks. `legal.bolablg.com` is a separate public Vercel site for policies, account guidance, and product notices. It must not be pointed at Clerk and `clerk.bolablg.com` must not be pointed at Vercel.
+
+Google and GitHub social connections are configured once in the production Clerk instance and can be used by the BOLABLG.com products that share it. Each product still needs the correct production Clerk keys, domain/origin configuration, and request authorization settings. Do not place Clerk secrets, product credentials, database keys, or learner data in this repository.
 
 Do not place Clerk secrets, product credentials, database keys, or learner data in this repository. Keep `clerk.bolablg.com` reserved for Clerk's custom domain, Frontend API, and OAuth callbacks. Never point that hostname to Vercel.
 
@@ -84,7 +88,7 @@ npm run build
 
 ## Deployment and domains
 
-The Vercel project is `legal-auth` in the `bolablg-projects` team. Production should be promoted through `main` after review. The recommended custom hostname is `legal.bolablg.com`, managed separately in Cloudflare and Vercel.
+The Vercel project is `legal-auth` in the `bolablg-projects` team. Production should be promoted through `main` after review. The public legal hostname is `legal.bolablg.com`, managed separately in Cloudflare and Vercel; it is intentionally separate from the Clerk production hostname.
 
 When configuring the custom hostname, use the exact CNAME target shown in the Vercel project domain card. In Cloudflare, create a CNAME record for `legal` pointing to that target and use DNS only/grey cloud unless Vercel's current instructions say otherwise. Do not change the `clerk` record.
 

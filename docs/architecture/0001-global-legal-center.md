@@ -16,9 +16,13 @@ Use a two-layer information architecture:
 
 Global documents describe the shared baseline and explicitly defer product-specific practices to the relevant product record. Product pages link back to the shared documents so users can understand both layers without losing context.
 
+Clerk is an external shared identity layer, not part of this repository. BOLABLG.com product applications use the production Clerk instance at `clerk.bolablg.com` for identity and OAuth; `legal.bolablg.com` remains a separate, unauthenticated public site for legal and account-support content. Product authorization is enforced by each product, not by this legal center.
+
 ## Consequences
 
 - Google OAuth can use stable general URLs without presenting StackBridge as the owner of every future product.
 - New BOLABLG.com applications can be added through configuration and shared components.
+- One production Clerk instance can support the product applications while the legal site remains public and independent.
+- Keeping `clerk.bolablg.com` and `legal.bolablg.com` separate prevents the legal site deployment from interfering with Clerk's DNS or OAuth callback surface.
 - Product owners must keep their data notice aligned with the actual authentication, hosting, storage, analytics, and support providers.
 - The legal copy remains a starter template and still requires owner/legal review before production reliance.
