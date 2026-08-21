@@ -1,20 +1,20 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
-import { defaultProduct } from "../lib/products";
+import { platform } from "../lib/platform";
 import { site } from "../lib/site";
 import "./globals.css";
 
 export const metadata: Metadata = {
   metadataBase: new URL(site.publicUrl),
   title: {
-    default: `${defaultProduct.name} — ${defaultProduct.tagline}`,
-    template: `%s — ${defaultProduct.name}`,
+    default: `${platform.name} Legal & Account Center`,
+    template: `%s — ${platform.name}`,
   },
-  description: site.tagline,
+  description: site.description,
   icons: { icon: "/favicon.svg" },
   openGraph: {
-    title: `${defaultProduct.name} — ${defaultProduct.tagline}`,
-    description: defaultProduct.tagline,
+    title: `${platform.name} Legal & Account Center`,
+    description: platform.description,
     type: "website",
     url: site.publicUrl,
   },

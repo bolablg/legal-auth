@@ -1,31 +1,26 @@
 import Link from "next/link";
-import { ArrowUpRight, BridgeIcon } from "./icons";
+import { ArrowUpRight, CenterIcon } from "./icons";
 import { navigation } from "../lib/site";
-import { defaultProduct, productRoute, type ProductConfig } from "../lib/products";
+import type { ProductConfig } from "../lib/products";
+import { platform } from "../lib/platform";
 
-export function SiteFooter({ product = defaultProduct }: Readonly<{ product?: ProductConfig }>) {
-  const isDefault = product.slug === defaultProduct.slug;
-  const route = (page: "privacy" | "terms" | "help") => isDefault ? `/${page}` : productRoute(product, page);
+export function SiteFooter({ product }: Readonly<{ product?: ProductConfig }>) {
   return (
     <footer className="site-footer">
       <div className="footer-top">
-        <Link className="brand footer-brand" href="/" aria-label={`${product.name} home`}>
-          <span className="brand-mark"><BridgeIcon size={22} /></span>
-          <span className="brand-wordmark">Stack<span>Bridge</span></span>
+        <Link className="brand footer-brand" href="/" aria-label={`${platform.name} ${platform.legalCenterName}`}>
+          <span className="brand-mark"><CenterIcon size={22} /></span>
+          <span className="brand-wordmark">BOLABLG<span>.com</span></span>
         </Link>
         <p>One legal and authentication foundation. More than one product to support.</p>
-        <a className="footer-external" href={product.homepageUrl}>
-          Go to {product.name} <ArrowUpRight size={15} />
-        </a>
+        {product ? <a className="footer-external" href={product.homepageUrl}>Go to {product.name} <ArrowUpRight size={15} /></a> : <Link className="footer-external" href="/products">Explore the directory <ArrowUpRight size={15} /></Link>}
       </div>
       <div className="footer-bottom">
-        <span>© {new Date().getFullYear()} {product.name}</span>
+        <span>© {new Date().getFullYear()} {platform.name}</span>
         <nav aria-label="Footer navigation">
-          {navigation.slice(1).map((item) => (
-            <Link key={item.href} href={route(item.href.slice(1) as "privacy" | "terms" | "help")}>{item.label}</Link>
-          ))}
+          {navigation.slice(1).map((item) => <Link key={item.href} href={item.href}>{item.label}</Link>)}
         </nav>
-        <span className="footer-note">Built for people who keep learning.</span>
+        <span className="footer-note">Shared by BOLABLG.com applications.</span>
       </div>
     </footer>
   );

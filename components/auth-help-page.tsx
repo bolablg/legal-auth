@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { ArrowUpRight } from "./icons";
 import { SiteShell } from "./site-shell";
 import type { ProductConfig } from "../lib/products";
@@ -20,6 +21,7 @@ export function AuthHelpPage({ product }: Readonly<{ product: ProductConfig }>) 
           ))}
         </div>
         <aside className="help-contact">
+          <div className="legal-product-note"><strong>Product-specific help.</strong> For shared guidance across BOLABLG.com applications, visit <Link href="/help">general account help</Link>.</div>
           <span className="aside-label">Support contact</span>
           <h2>Still stuck?</h2>
           <p>Send a short description of the issue. Please do not include passwords, one-time codes, API keys, or other secrets.</p>

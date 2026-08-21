@@ -1,6 +1,5 @@
-import { ProductHome } from "../components/product-home";
-import { defaultProduct } from "../lib/products";
+import { GlobalHome } from "../components/global-home";
 
 export default function Home() {
-  return <ProductHome product={defaultProduct} />;
+  return <GlobalHome />;
 }
