@@ -106,7 +106,7 @@ The legal documents are starter templates, not legal advice. Before production u
 
 ## Relationship to StackBridge
 
-This is an independent project/repository located under the local StackBridge workspace. It does not import dashboard code, Clerk keys, database configuration, or learner data. Keeping the companion site separate lets the public policy surface remain available while a product is private, under maintenance, or being redesigned.
+This is an independent project/repository maintained in its own checkout, separate from StackBridge. It does not import dashboard code, Clerk keys, database configuration, or learner data. Keeping the companion site separate lets the public policy surface remain available while a product is private, under maintenance, or being redesigned.
 
 See [`CONTRIBUTING.md`](./CONTRIBUTING.md) for the contribution workflow.
 
