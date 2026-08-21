@@ -16,7 +16,7 @@ Use a two-layer information architecture:
 
 Global documents describe the shared baseline and explicitly defer product-specific practices to the relevant product record. Product pages link back to the shared documents so users can understand both layers without losing context.
 
-Clerk is an external shared identity layer, not part of this repository. BOLABLG.com product applications use the production Clerk instance at `clerk.bolablg.com` for identity and OAuth; `legal.bolablg.com` remains a separate, unauthenticated public site for legal and account-support content. Product authorization is enforced by each product, not by this legal center.
+Clerk is an external shared identity layer, not part of this repository. BOLABLG.com product applications use the production Clerk instance at `clerk.bolablg.com` for identity and OAuth; `legal.bolablg.com` remains a separate, unauthenticated public site for legal and account-support content. Product authorization is enforced by each product, not by this legal center. StackBridge keeps its Vercel Preview deployments on the Clerk development instance and uses the production instance only for the Production deployment from `main`; those product environment variables never belong in this repository.
 
 ## Consequences
 

@@ -55,7 +55,15 @@ The legal center is public and does not authenticate users. BOLABLG.com product 
 
 Google and GitHub social connections are configured once in the production Clerk instance and can be used by the BOLABLG.com products that share it. Each product still needs the correct production Clerk keys, domain/origin configuration, and request authorization settings. Do not place Clerk secrets, product credentials, database keys, or learner data in this repository.
 
-Do not place Clerk secrets, product credentials, database keys, or learner data in this repository. Keep `clerk.bolablg.com` reserved for Clerk's custom domain, Frontend API, and OAuth callbacks. Never point that hostname to Vercel.
+Keep `clerk.bolablg.com` reserved for Clerk's custom domain, Frontend API, and OAuth callbacks. Never point that hostname to Vercel.
+
+### StackBridge link and deployment boundary
+
+The StackBridge product record links to the production workspace at [`https://stackbridge.bolablg.com`](https://stackbridge.bolablg.com). It intentionally does not link to a Vercel preview URL.
+
+StackBridge uses the shared production Clerk instance in production, while its Vercel Preview deployments use the Clerk development instance. In practical terms, StackBridge must use `pk_test_…`/`sk_test_…` in Vercel Preview and `pk_live_…`/`sk_live_…` in Vercel Production from `main`. The separate `legal-auth` site has no Clerk SDK, no Clerk environment variables, and does not inherit either set of credentials.
+
+The environment split is documented in the StackBridge repository's [`Vercel and Clerk environment boundary`](https://github.com/bolablg/StackBridge/blob/main/docs/deployment/vercel-clerk-environments.md) runbook. Keep the legal center public even when a product requires authentication.
 
 ## Google OAuth URLs
 
