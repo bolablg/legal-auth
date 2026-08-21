@@ -49,9 +49,21 @@ The global documents live in [`lib/global-content.ts`](./lib/global-content.ts),
 
 ## Authentication boundary
 
-The legal center is public and does not authenticate users. Some BOLABLG.com applications use Clerk for registration, sign-in, verification, and access controls. The center explains that shared pattern, while each product page identifies its own implementation and data practices.
+The legal center is public and does not authenticate users. BOLABLG.com product applications use the shared production Clerk instance for registration, sign-in, verification, and identity. The product applications own authorization decisions such as allowlists, access requests, roles, and product data; the legal center only documents the relationship.
 
-Do not place Clerk secrets, product credentials, database keys, or learner data in this repository. Keep `clerk.bolablg.com` reserved for Clerk's custom domain, Frontend API, and OAuth callbacks. Never point that hostname to Vercel.
+`clerk.bolablg.com` is reserved for Clerk's production custom domain, Frontend API, session-management surface, and OAuth callbacks. `legal.bolablg.com` is a separate public Vercel site for policies, account guidance, and product notices. It must not be pointed at Clerk and `clerk.bolablg.com` must not be pointed at Vercel.
+
+Google and GitHub social connections are configured once in the production Clerk instance and can be used by the BOLABLG.com products that share it. Each product still needs the correct production Clerk keys, domain/origin configuration, and request authorization settings. Do not place Clerk secrets, product credentials, database keys, or learner data in this repository.
+
+Keep `clerk.bolablg.com` reserved for Clerk's custom domain, Frontend API, and OAuth callbacks. Never point that hostname to Vercel.
+
+### StackBridge link and deployment boundary
+
+The StackBridge product record links to the production workspace at [`https://stackbridge.bolablg.com`](https://stackbridge.bolablg.com). It intentionally does not link to a Vercel preview URL.
+
+StackBridge uses the shared production Clerk instance in production, while its Vercel Preview deployments use the Clerk development instance. In practical terms, StackBridge must use `pk_test_…`/`sk_test_…` in Vercel Preview and `pk_live_…`/`sk_live_…` in Vercel Production from `main`. The separate `legal-auth` site has no Clerk SDK, no Clerk environment variables, and does not inherit either set of credentials.
+
+The environment split is documented in the StackBridge repository's [`Vercel and Clerk environment boundary`](https://github.com/bolablg/StackBridge/blob/main/docs/deployment/vercel-clerk-environments.md) runbook. Keep the legal center public even when a product requires authentication.
 
 ## Google OAuth URLs
 
@@ -84,7 +96,7 @@ npm run build
 
 ## Deployment and domains
 
-The Vercel project is `legal-auth` in the `bolablg-projects` team. Production should be promoted through `main` after review. The recommended custom hostname is `legal.bolablg.com`, managed separately in Cloudflare and Vercel.
+The Vercel project is `legal-auth` in the `bolablg-projects` team. Production should be promoted through `main` after review. The public legal hostname is `legal.bolablg.com`, managed separately in Cloudflare and Vercel; it is intentionally separate from the Clerk production hostname.
 
 When configuring the custom hostname, use the exact CNAME target shown in the Vercel project domain card. In Cloudflare, create a CNAME record for `legal` pointing to that target and use DNS only/grey cloud unless Vercel's current instructions say otherwise. Do not change the `clerk` record.
 
@@ -94,7 +106,7 @@ The legal documents are starter templates, not legal advice. Before production u
 
 ## Relationship to StackBridge
 
-This is an independent project/repository located under the local StackBridge workspace. It does not import dashboard code, Clerk keys, database configuration, or learner data. Keeping the companion site separate lets the public policy surface remain available while a product is private, under maintenance, or being redesigned.
+This is an independent project/repository maintained in its own checkout, separate from StackBridge. It does not import dashboard code, Clerk keys, database configuration, or learner data. Keeping the companion site separate lets the public policy surface remain available while a product is private, under maintenance, or being redesigned.
 
 See [`CONTRIBUTING.md`](./CONTRIBUTING.md) for the contribution workflow.
 
