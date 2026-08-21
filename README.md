@@ -1,39 +1,69 @@
 # legal-auth
 
-`legal-auth` is a reusable public legal and authentication-support companion site for BOLABLG products. It gives an external OAuth application a stable, unauthenticated homepage, Privacy Policy, Terms of Service, and account-help surface without coupling those pages to an authenticated product dashboard.
+`legal-auth` is a reusable public legal and authentication-support foundation for BOLABLG.com applications. It gives OAuth providers and users a stable, unauthenticated place to find the shared privacy policy, general terms, account guidance, and product-specific notices.
 
-StackBridge is the first configured product. The public site is designed to support additional products later through a small product registry rather than a new microsite for every application.
+The site is intentionally broader than any one application. StackBridge is the first configured product, but it is represented inside a product directory rather than used as the identity of the legal center.
 
-## Routes
+## Information architecture
 
-The default product (currently StackBridge) is available at the root routes used by OAuth providers:
+The site has two layers:
 
-- `/` — product overview and public homepage
-- `/privacy` — Privacy Policy
-- `/terms` — Terms of Service
-- `/help` — authentication and account help
+### Shared BOLABLG.com layer
 
-Every configured product also gets explicit reusable routes:
+- `/` — BOLABLG.com Legal & Account Center overview
+- `/products` — product directory
+- `/privacy` — general BOLABLG.com Privacy Policy foundation
+- `/terms` — general BOLABLG.com Terms of Service foundation
+- `/help` — shared account and authentication help
 
-- `/products/<slug>/`
-- `/products/<slug>/privacy`
-- `/products/<slug>/terms`
-- `/products/<slug>/help`
+The shared pages explain the center's scope and the general model. They do not pretend to describe every application's data flow.
 
-For StackBridge, the equivalent product-scoped route is `/products/stackbridge/`.
+### Product layer
+
+Each configured product gets a consistent public record:
+
+- `/products/<slug>/` — product overview
+- `/products/<slug>/data` — product data and security notice
+- `/products/<slug>/privacy` — product privacy notice/addendum
+- `/products/<slug>/terms` — product terms addendum
+- `/products/<slug>/help` — product-specific account help
+
+For the first product, the available routes are under `/products/stackbridge/`. Its live learning workspace is `https://stackbridge.bolablg.com`.
+
+This layering is deliberate: the general documents describe the shared foundation, while each product states what it actually collects, how it uses the information, which authentication provider it uses, and where product support belongs.
 
 ## Add another product
 
 Add a new entry to [`lib/products.ts`](./lib/products.ts). A product configuration includes:
 
 - display name, tagline, description, and homepage URL;
-- support email;
-- brand accent colors;
-- homepage hero and path-library content;
-- structured Privacy Policy and Terms of Service content;
-- authentication-help steps.
+- support email and brand accent colors;
+- overview hero and path-library content;
+- a product data notice with categories, purposes, retention, security, and authentication provider;
+- structured product Privacy Policy and Terms content;
+- product-specific authentication-help steps.
 
-The shared page components render that configuration for the product-scoped routes. The root routes remain aliases for the `defaultProduct`, currently `stackbridge`. This keeps the Google OAuth URLs stable while allowing another application to use the same legal/authentication foundation.
+The shared components and dynamic routes render that configuration. Adding a product does not require duplicating the legal site or adding a new microsite.
+
+The global documents live in [`lib/global-content.ts`](./lib/global-content.ts), while shared platform settings such as the public URL, support address, and authentication-provider wording live in [`lib/platform.ts`](./lib/platform.ts). Keep provider and data-practice statements aligned with the tools actually enabled.
+
+## Authentication boundary
+
+The legal center is public and does not authenticate users. Some BOLABLG.com applications use Clerk for registration, sign-in, verification, and access controls. The center explains that shared pattern, while each product page identifies its own implementation and data practices.
+
+Do not place Clerk secrets, product credentials, database keys, or learner data in this repository. Keep `clerk.bolablg.com` reserved for Clerk's custom domain, Frontend API, and OAuth callbacks. Never point that hostname to Vercel.
+
+## Google OAuth URLs
+
+The intended public hostname is `https://legal.bolablg.com`:
+
+| Google OAuth field | URL |
+| --- | --- |
+| Application homepage | `https://legal.bolablg.com/` |
+| Privacy policy | `https://legal.bolablg.com/privacy` |
+| Terms of service | `https://legal.bolablg.com/terms` |
+
+These are the general BOLABLG.com pages. A product's own page can be linked from the directory and may be used as an additional product-specific reference.
 
 ## Local development
 
@@ -43,7 +73,7 @@ cp .env.example .env.local
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000). The site is unauthenticated and does not require a database.
+Open [http://localhost:3000](http://localhost:3000). The site is unauthenticated and does not require a database for the public legal content.
 
 Run the checks before opening a pull request:
 
@@ -54,23 +84,17 @@ npm run build
 
 ## Deployment and domains
 
-The proposed production hostname is `legal.bolablg.com`:
+The Vercel project is `legal-auth` in the `bolablg-projects` team. Production should be promoted through `main` after review. The recommended custom hostname is `legal.bolablg.com`, managed separately in Cloudflare and Vercel.
 
-| Google OAuth field | URL |
-| --- | --- |
-| Application homepage | `https://legal.bolablg.com/` |
-| Privacy policy | `https://legal.bolablg.com/privacy` |
-| Terms of service | `https://legal.bolablg.com/terms` |
+When configuring the custom hostname, use the exact CNAME target shown in the Vercel project domain card. In Cloudflare, create a CNAME record for `legal` pointing to that target and use DNS only/grey cloud unless Vercel's current instructions say otherwise. Do not change the `clerk` record.
 
-Keep `clerk.bolablg.com` reserved for Clerk’s custom domain, Frontend API, and OAuth callbacks. Never point that hostname to Vercel or replace its DNS. The StackBridge product homepage remains `https://stackbridge.bolablg.com`.
+## Legal and content review
 
-## Content and legal review
-
-The legal documents are starter templates, not legal advice. Before production use, each product owner should verify actual data flows, hosting/authentication/database providers, retention, contact details, jurisdiction-specific disclosures, and any required cookie or consent experience. Do not present the template as a complete statement of a product’s data practices until it has been reviewed.
+The legal documents are starter templates, not legal advice. Before production use, each product owner should verify the actual legal entity, data flows, hosting/authentication/database providers, retention, contact details, jurisdiction-specific disclosures, and any required cookie or consent experience. Do not present a template as a complete statement of a product's practices until it has been reviewed.
 
 ## Relationship to StackBridge
 
-This is an independent project/repository located under the local StackBridge workspace. It does not import dashboard code, Clerk keys, database configuration, or learner data. Keeping the companion site separate limits the blast radius of public-content changes and lets the OAuth/legal pages remain available while a product is private or under maintenance.
+This is an independent project/repository located under the local StackBridge workspace. It does not import dashboard code, Clerk keys, database configuration, or learner data. Keeping the companion site separate lets the public policy surface remain available while a product is private, under maintenance, or being redesigned.
 
 See [`CONTRIBUTING.md`](./CONTRIBUTING.md) for the contribution workflow.
 
@@ -80,4 +104,4 @@ See [`CONTRIBUTING.md`](./CONTRIBUTING.md) for the contribution workflow.
 - `staging` — integration and preview validation.
 - `main` — production deployment branch.
 
-Open a pull request into `staging` after the quality checks pass, then promote the reviewed staging commit to `main` for production. Vercel is connected to the repository; its first deployment created the project’s production URL, and future non-production branch pushes can receive previews through the Git integration.
+Open a pull request into `staging` after quality checks pass, then promote the reviewed staging commit to `main` for production. GitHub Actions runs lint/build checks and prepares a draft promotion pull request when a `dev-*` branch is pushed.

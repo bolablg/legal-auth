@@ -1,11 +1,17 @@
+import { platform } from "./platform";
+
 export const site = {
-  name: "legal-auth",
-  tagline: "A reusable public legal and authentication companion site.",
-  publicUrl: process.env.NEXT_PUBLIC_PUBLIC_SITE_URL ?? "https://legal.bolablg.com",
+  name: platform.name,
+  legalCenterName: platform.legalCenterName,
+  tagline: platform.tagline,
+  description: platform.description,
+  publicUrl: platform.publicUrl,
+  supportEmail: platform.supportEmail,
 } as const;
 
 export const navigation = [
   { href: "/", label: "Overview" },
+  { href: "/products", label: "Products" },
   { href: "/privacy", label: "Privacy" },
   { href: "/terms", label: "Terms" },
   { href: "/help", label: "Account help" },

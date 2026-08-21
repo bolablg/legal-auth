@@ -62,6 +62,35 @@ export function ProductHome({ product }: Readonly<{ product: ProductConfig }>) {
         </div>
       </section>
 
+      <section className="product-resources" id="product-record">
+        <div className="product-resources-heading">
+          <div className="eyebrow"><span className="eyebrow-dot" /> The StackBridge record</div>
+          <h2>See the product<br /><em>in full context.</em></h2>
+        </div>
+        <div className="product-resource-list">
+          <Link href={productRoute(product, "data")} className="product-resource-card product-resource-featured">
+            <span className="product-resource-number">01</span>
+            <div><h3>Data & security</h3><p>What the workspace handles, why it is used, and how the intended data model works.</p></div>
+            <ArrowUpRight size={19} />
+          </Link>
+          <Link href={productRoute(product, "privacy")} className="product-resource-card">
+            <span className="product-resource-number">02</span>
+            <div><h3>Privacy notice</h3><p>The product-specific privacy addendum, read with the shared BOLABLG.com policy.</p></div>
+            <ArrowUpRight size={19} />
+          </Link>
+          <Link href={productRoute(product, "terms")} className="product-resource-card">
+            <span className="product-resource-number">03</span>
+            <div><h3>Terms addendum</h3><p>The StackBridge-specific usage context and educational-workspace terms.</p></div>
+            <ArrowUpRight size={19} />
+          </Link>
+          <Link href={productRoute(product, "help")} className="product-resource-card">
+            <span className="product-resource-number">04</span>
+            <div><h3>Account help</h3><p>A handrail for sign-in, approvals, invitations, and support.</p></div>
+            <ArrowUpRight size={19} />
+          </Link>
+        </div>
+      </section>
+
       <section className="section-block philosophy-section">
         <div className="philosophy-mark"><BridgeIcon size={38} /></div>
         <div className="philosophy-copy">

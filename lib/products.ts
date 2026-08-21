@@ -1,13 +1,6 @@
-export type LegalBlock =
-  | { kind: "paragraph"; text: string }
-  | { kind: "heading"; text: string }
-  | { kind: "list"; items: string[] };
+import type { AuthHelpConfig, DocumentConfig } from "./content";
 
-export type LegalSection = {
-  id: string;
-  title: string;
-  blocks: LegalBlock[];
-};
+export type { AuthHelpConfig, DocumentConfig, LegalBlock, LegalSection } from "./content";
 
 export type ProductConfig = {
   slug: string;
@@ -26,15 +19,20 @@ export type ProductConfig = {
     meta: string;
     status: "live" | "soon";
   }>;
-  legal: {
-    privacy: { title: string; intro: string; updated: string; sections: LegalSection[] };
-    terms: { title: string; intro: string; updated: string; sections: LegalSection[] };
-  };
-  authHelp: {
+  dataNotice: {
     title: string;
     intro: string;
-    steps: Array<{ title: string; body: string }>;
+    provider: string;
+    categories: Array<{ label: string; detail: string }>;
+    purposes: string[];
+    retention: string;
+    security: string;
   };
+  legal: {
+    privacy: DocumentConfig;
+    terms: DocumentConfig;
+  };
+  authHelp: AuthHelpConfig;
 };
 
 /**
@@ -61,6 +59,19 @@ export const products: Record<string, ProductConfig> = {
       { profile: "Machine learning engineering", source: "Choose your starting platform", destination: "More bridges to come", meta: "Role and platform translation", status: "soon" },
       { profile: "Cloud architecture", source: "Choose your starting platform", destination: "More bridges to come", meta: "Role and platform translation", status: "soon" },
     ],
+    dataNotice: {
+      title: "What StackBridge handles to make the path personal.",
+      intro: "This product-specific data notice sits beside the general BOLABLG.com Privacy Policy. It records the intended data model for the StackBridge workspace and should be updated whenever the implementation changes.",
+      provider: "Clerk for account registration, sign-in, verification, and access control.",
+      categories: [
+        { label: "Account and access", detail: "The identity and basic profile information made available by the authentication provider, plus access-request state needed to decide whether a workspace can be opened." },
+        { label: "Learning workspace", detail: "Path selection, progress, check-ins, notes, diagnostic results, and other learning evidence that a member chooses to create." },
+        { label: "Technical context", detail: "Operational logs and request metadata needed to host, secure, troubleshoot, and improve reliability. The owner should keep this list aligned with the enabled providers." },
+      ],
+      purposes: ["Create and secure an account.", "Personalize the selected learning path and save progress.", "Support accountability features and access requests.", "Operate, troubleshoot, and protect the workspace.", "Respond to support questions and meet applicable obligations."],
+      retention: "Keep account, learning, and technical information only for as long as the StackBridge owner confirms it is needed for the stated purposes, a user requests deletion where applicable, or law requires a longer period.",
+      security: "StackBridge should use reasonable administrative, technical, and organizational safeguards, including the controls provided by its hosting and authentication providers. Do not put passwords, cloud credentials, API keys, or other secrets in learning notes.",
+    },
     legal: {
       privacy: {
         title: "A clear account of the information that supports the bridge.",
@@ -218,12 +229,10 @@ export const products: Record<string, ProductConfig> = {
   },
 };
 
-export const defaultProduct = products.stackbridge;
-
 export function getProduct(slug: string): ProductConfig | undefined {
   return products[slug];
 }
 
-export function productRoute(product: ProductConfig, page?: "privacy" | "terms" | "help"): string {
+export function productRoute(product: ProductConfig, page?: "privacy" | "terms" | "help" | "data"): string {
   return `/products/${product.slug}${page ? `/${page}` : ""}`;
 }

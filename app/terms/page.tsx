@@ -1,9 +1,8 @@
 import type { Metadata } from "next";
-import { LegalDocument } from "../../components/legal-document";
-import { defaultProduct } from "../../lib/products";
+import { GlobalLegalDocument } from "../../components/legal-document";
 
-export const metadata: Metadata = { title: "Terms of Service", description: "The StackBridge starter terms of service." };
+export const metadata: Metadata = { title: "General Terms", description: "The general BOLABLG.com terms foundation and product-specific model." };
 
 export default function TermsPage() {
-  return <LegalDocument product={defaultProduct} type="terms" />;
+  return <GlobalLegalDocument type="terms" />;
 }
