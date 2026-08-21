@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { ProductHome } from "../../../components/product-home";
-import { getProduct, products } from "../../../lib/products";
+import { ProductDataNotice } from "../../../../components/product-data-notice";
+import { getProduct, products } from "../../../../lib/products";
 
 export function generateStaticParams() {
   return Object.keys(products).map((product) => ({ product }));
@@ -10,12 +10,12 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: { params: Promise<{ product: string }> }): Promise<Metadata> {
   const { product: slug } = await params;
   const product = getProduct(slug);
-  return product ? { title: product.name, description: product.tagline } : {};
+  return product ? { title: `${product.name} Data & Security`, description: product.dataNotice.intro } : {};
 }
 
-export default async function ProductPage({ params }: { params: Promise<{ product: string }> }) {
+export default async function ProductDataPage({ params }: { params: Promise<{ product: string }> }) {
   const { product: slug } = await params;
   const product = getProduct(slug);
   if (!product) notFound();
-  return <ProductHome product={product} />;
+  return <ProductDataNotice product={product} />;
 }
