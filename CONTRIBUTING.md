@@ -20,7 +20,7 @@ npm run build
 
 ## Pull requests
 
-- Use a short feature branch based on `main`.
+- Use a short feature branch based on `dev-bola`; promote reviewed work through `staging` and then `main`.
 - Explain the user-facing change and include screenshots for visual changes.
 - Keep the public site unauthenticated; do not add product dashboard secrets or user data.
 - Do not change the legal pages to make claims about providers, tracking, retention, or rights unless those claims have been verified by the owner.

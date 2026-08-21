@@ -73,3 +73,11 @@ The legal documents are starter templates, not legal advice. Before production u
 This is an independent project/repository located under the local StackBridge workspace. It does not import dashboard code, Clerk keys, database configuration, or learner data. Keeping the companion site separate limits the blast radius of public-content changes and lets the OAuth/legal pages remain available while a product is private or under maintenance.
 
 See [`CONTRIBUTING.md`](./CONTRIBUTING.md) for the contribution workflow.
+
+## Branch workflow
+
+- `dev-bola` — active development branch.
+- `staging` — integration and preview validation.
+- `main` — production deployment branch.
+
+Open a pull request into `staging` after the quality checks pass, then promote the reviewed staging commit to `main` for production. Vercel is connected to the repository; its first deployment created the project’s production URL, and future non-production branch pushes can receive previews through the Git integration.
